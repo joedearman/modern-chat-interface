@@ -1,77 +1,71 @@
-# Technical Specification: Modern Chat Interface
+# Modern Chat Interface Specification
 
-## Overview
-A React-based chat interface featuring a modern, minimalist design inspired by ChatGPT.
+## Architecture
 
-## Core Features
-1. **Header Component**
-   - Model selector dropdown (e.g., "ChatGPT 4o mini")
-   - Authentication buttons (Log in/Sign up)
-   - Responsive design
+### Components
+- Layout: Header, Main Chat Area, Footer
+- Features: Message Thread, Input Area, Quick Actions
+- Common: ThemeToggle, Button, ModelSelector
 
-2. **Chat Interface**
-   - Central message display area
-   - Message input with attachments
-   - Quick action buttons:
-     - Create image
-     - Summarize text
-     - Get advice
-     - Make a plan
-     - More options dropdown
+### State Management
+- ThemeContext: Handles dark/light mode
+- ChatContext: Manages messages and API interactions
 
-3. **Footer Component**
-   - Terms of service link
-   - Privacy policy link
-   - Agreement text
+### Data Flow
+```
+ChatContext -> Messages -> MessageThread -> ChatMessage
+            -> Input -> MessageInput -> API
+```
+
+## Features
+
+### Core
+- Real-time chat with OpenAI API
+- Dark/light mode with system preference detection
+- Message persistence
+- Error handling and retry mechanisms
+- Loading states and animations
+
+### UI/UX
+- Responsive design (mobile-first)
+- Message typing indicators
+- Smooth transitions
+- Quick action shortcuts
+- Keyboard shortcuts (Enter to send)
 
 ## Technical Stack
 - React 18+
 - TypeScript
 - Tailwind CSS
-- Headless UI components
-- Vite for build tooling
+- OpenAI API
+- Local Storage for persistence
 
-## Component Architecture
-```
-src/
-├── components/
-│   ├── layout/
-│   │   ├── Header.tsx
-│   │   ├── ChatArea.tsx
-│   │   └── Footer.tsx
-│   ├── common/
-│   │   ├── Button.tsx
-│   │   ├── Dropdown.tsx
-│   │   └── Input.tsx
-│   └── features/
-│       ├── ModelSelector.tsx
-│       ├── QuickActions.tsx
-│       └── MessageInput.tsx
-├── hooks/
-│   └── useChat.ts
-└── types/
-    └── index.ts
+## API Integration
+```typescript
+interface ChatConfig {
+  OPENAI_API_KEY: string
+  OPENAI_MODEL: string
+  MAX_TOKENS: number
+  TEMPERATURE: number
+}
+
+interface Message {
+  role: 'user' | 'assistant'
+  content: string
+  timestamp: Date
+}
 ```
 
-## Design System
-- Colors:
-  - Background: #FFFFFF
-  - Primary Text: #000000
-  - Secondary Text: #6B7280
-  - Accent: Current theme color
-  - Border: #E5E7EB
+## Implementation Plan
+1. Core Components & Layout ✓
+2. Theme Management ✓
+3. Message Components ✓
+4. OpenAI Integration ⏳
+5. State Management & Persistence
+6. Error Handling & Recovery
+7. Performance Optimization
 
-- Typography:
-  - Font Family: System default
-  - Base size: 16px
-  - Scale: 1.25
-
-- Spacing:
-  - Base unit: 4px
-  - Scale: 2x progression
-
-## Implementation Phases
-1. Basic Layout & Components
-2. Styling & Responsiveness
-3. Interactions & State Management
-4. Polish & Animations
+## Testing Strategy
+- Unit tests for hooks and utilities
+- Integration tests for API interactions
+- E2E tests for critical user flows
